@@ -1,14 +1,16 @@
 spring:
   application:
-    name: "codingchallenge  "
-#  jpa:
-#    show-sql: false
-#    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
-#  datasource:
-#    url: jdbc:postgresql://${DB_DEFAULT_HOST:localhost}:${DB_PORT:5432}/${DB_DEFAULT_DATABASE:${spring.application.name}}
-#    driver-class-name: org.postgresql.Driver
-#    hikari:
-#      maximum-pool-size: 2
+    name: "codingchallenge"
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.PostgreSQL95Dialect
+  datasource:
+    url: jdbc:postgresql://localhost:5432/coding_challenge
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 2
+      username: coding_challenge_usr
+      password: coding_challeng_password
 
 management:
   endpoints:
