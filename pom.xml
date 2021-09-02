@@ -18,6 +18,7 @@
   <properties>
     <java.version>11</java.version>
     <springdoc.version>1.5.9</springdoc.version>
+    <liquibase-core.version>4.4.3</liquibase-core.version>
   </properties>
 
   <dependencies>
@@ -52,10 +53,11 @@
       <scope>runtime</scope>
     </dependency>
 
-    <!--    <dependency>-->
-    <!--      <groupId>org.liquibase</groupId>-->
-    <!--      <artifactId>liquibase-core</artifactId>-->
-    <!--    </dependency>-->
+    <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
+      <version>${liquibase-core.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>org.projectlombok</groupId>

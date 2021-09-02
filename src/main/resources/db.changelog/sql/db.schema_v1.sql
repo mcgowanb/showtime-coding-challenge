@@ -1,13 +1,14 @@
-create table example
+create table url_metadata
 (
-    id                bigint primary key not null,
-    user_message      varchar,
-    created_at        timestamptz        not null,
-    updated_at        timestamptz        not null
+    id         bigint primary key not null,
+    url        varchar(150),
+    short_url  varchar(25),
+    created_at timestamptz        not null,
+    updated_at timestamptz        not null
 );
 
-create sequence EXAMPLE_SEQ increment by 1 start 1000000 cache 1 owned by example.id;
+create sequence URL_SEQ increment by 1 start 1000000 cache 1 owned by url_metadata.id;
 
-INSERT INTO public.example
-(id, user_message, created_at, updated_at)
-VALUES(nextval('EXAMPLE_SEQ'), 'user message from the database', NOW(), NOW());
+-- INSERT INTO public.example
+-- (id, user_message, created_at, updated_at)
+-- VALUES(nextval('EXAMPLE_SEQ'), 'user message from the database', NOW(), NOW());
