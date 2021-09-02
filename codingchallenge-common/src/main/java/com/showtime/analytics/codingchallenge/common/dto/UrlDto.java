@@ -1,4 +1,4 @@
-package com.showtime.analytics.codingchallenge.dto;
+package com.showtime.analytics.codingchallenge.common.dto;
 
 import javax.validation.constraints.NotNull;
 

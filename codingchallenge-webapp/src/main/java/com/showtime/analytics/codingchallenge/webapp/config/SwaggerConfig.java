@@ -1,4 +1,4 @@
-package com.showtime.analytics.codingchallenge.config;
+package com.showtime.analytics.codingchallenge.webapp.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;

@@ -1,4 +1,4 @@
-package com.showtime.analytics.codingchallenge.constant;
+package com.showtime.analytics.codingchallenge.common.constant;
 
 public class ApplicationConstants {
 
