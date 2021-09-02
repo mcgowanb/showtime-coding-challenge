@@ -15,17 +15,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.showtime.analytics.codingchallenge.common.dto.UrlDto;
+import com.showtime.analytics.codingchallenge.service.UrlValidationService;
 import com.showtime.analytics.codingchallenge.webapp.controller.UrlController;
 
 @Log4j2
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(API_URL_PATH)
-
 public class UrlControllerImpl implements UrlController {
+
+  private final UrlValidationService validationService;
 
   @Override
   public ResponseEntity<String> getUrlRedirect(@PathParam(PATH_PARAM_URL) final String url) {
+    validationService.validateDataCollection();
     return ResponseEntity.ok("Hello world, url is: " + url);
   }
 

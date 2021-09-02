@@ -27,6 +27,7 @@
     <spring-boot-starter.version>2.5.4</spring-boot-starter.version>
     <lombok.version>1.18.20</lombok.version>
     <postgresql.version>42.2.23</postgresql.version>
+    <spring-context.version>5.3.9</spring-context.version>
 
 
   </properties>
@@ -34,6 +35,7 @@
   <modules>
     <module>codingchallenge-common</module>
     <module>codingchallenge-webapp</module>
+    <module>codingchallenge-service</module>
   </modules>
 
   <dependencyManagement>
@@ -50,6 +52,13 @@
         <artifactId>codingchallenge-webapp</artifactId>
         <version>${project.version}</version>
       </dependency>
+
+      <dependency>
+        <groupId>com.showtime.analytics</groupId>
+        <artifactId>codingchallenge-service</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter</artifactId>
@@ -76,6 +85,11 @@
         <scope>runtime</scope>
       </dependency>
 
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-core</artifactId>
+        <version>${spring-context.version}</version>
+      </dependency>
 
     </dependencies>
   </dependencyManagement>
