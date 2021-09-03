@@ -17,3 +17,10 @@ Running `setup-and-run.sh` from the root directory will do the following:
   the `docker-compose` file for running a container of the app that was built by the shell script
 
 Once completed, you can run `shutdown.sh` to stop all running containers.
+
+When the app is running, you can view the available endpoints via swagger
+at `http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config`
+
+The credentials from postgres are simply `coding_challenge_usr` / `coding_challenge_password` for brevity. Ideally an
+implementation of hashicorp vault or similar would be used to store these credentails or even provide rotating
+credentials for the application to improve security 
