@@ -1,7 +1,7 @@
 # Extract the layered JAR
 FROM adoptopenjdk/openjdk11:latest as appbuilder_stage
 WORKDIR application
-ARG JAR_FILE=./target/*.jar
+ARG JAR_FILE=./codingchallenge-webapp/target/*-exec.jar
 COPY ${JAR_FILE} app.jar
 RUN java -Djarmode=layertools -jar app.jar extract
 
@@ -13,7 +13,7 @@ FROM adoptopenjdk/openjdk11:latest
 LABEL ostk.app.name=GlobalZonosShipConfirmer
 LABEL ostk.app.type=webservice
 
-ENV TZ=America/Denver
+ENV TZ=Europe/Dublin
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Create appuser to run as non-root for security purposes and /app for app-specific files

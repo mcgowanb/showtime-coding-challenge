@@ -2,6 +2,7 @@ package com.showtime.analytics.codingchallenge.service.config;
 
 import org.quartz.JobDetail;
 import org.quartz.SimpleTrigger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
@@ -11,6 +12,9 @@ import com.showtime.analytics.codingchallenge.service.schedule.JobScheduler;
 
 @Configuration
 public class ScheduleConfig {
+
+  @Value("${schedule.intervalMinutes}")
+  private Integer intervalMinutes;
 
   /*
   Using the job in this way is a suboptimal solution if this microservice was to be used in distributed environment where there
@@ -30,10 +34,14 @@ public class ScheduleConfig {
   public SimpleTriggerFactoryBean trigger(final JobDetail job) {
     final SimpleTriggerFactoryBean trigger = new SimpleTriggerFactoryBean();
     trigger.setJobDetail(job);
-    trigger.setRepeatInterval(5000);
-    trigger.setStartDelay(10000);
+    trigger.setRepeatInterval(minutesToMillis(intervalMinutes));
+    trigger.setStartDelay(minutesToMillis(intervalMinutes));
     trigger.setRepeatCount(SimpleTrigger.REPEAT_INDEFINITELY);
     return trigger;
+  }
+
+  private Integer minutesToMillis(final Integer minutes) {
+    return minutes * 1000;
   }
 
 }

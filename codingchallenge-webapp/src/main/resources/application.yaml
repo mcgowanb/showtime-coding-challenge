@@ -26,9 +26,11 @@ spring:
             dataSource: quartzDataSource
             class: org.quartz.impl.jdbcjobstore.JobStoreTX
             driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+            isClustered: true
+            clusterCheckinInterval: 5000
+            tablePrefix: quartz.QRTZ_
     jdbc:
       initialize-schema: never
-
 
 management:
   endpoints:
@@ -41,3 +43,9 @@ management:
 
 springdoc:
   show-actuator: false
+
+schedule:
+  intervalMinutes: 1
+
+server:
+  port: 8081

@@ -16,7 +16,7 @@ public class UrlValidationServiceImpl implements UrlValidationService {
   public void validateDataCollection() {
     log.info("Validating db stuff, sleeping");
     Thread.sleep(3000);
-    log.info("Sleeping over");
+    log.info("Sleeping over bai");
 
   }
 }
