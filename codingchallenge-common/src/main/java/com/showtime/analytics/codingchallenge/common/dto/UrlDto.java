@@ -18,8 +18,6 @@ public class UrlDto {
   @NotNull
   String fqdn;
 
-  String shortenedUrl;
-
   @JsonPOJOBuilder(withPrefix = StringUtils.EMPTY)
   public static class Builder {
   }

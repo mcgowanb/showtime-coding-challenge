@@ -1,8 +1,7 @@
 create table url_metadata
 (
     id         bigint primary key not null,
-    url        varchar(150),
-    short_url  varchar(25),
+    fqdn       varchar(150),
     created_at timestamptz        not null,
     updated_at timestamptz        not null
 );

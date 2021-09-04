@@ -8,7 +8,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.springframework.stereotype.Service;
 
-import com.showtime.analytics.codingchallenge.service.UrlValidationService;
+import com.showtime.analytics.codingchallenge.service.UrlService;
 
 @Log4j2
 @Service
@@ -16,10 +16,10 @@ import com.showtime.analytics.codingchallenge.service.UrlValidationService;
 @DisallowConcurrentExecution
 public class ValidateJob implements Job {
 
-  private final UrlValidationService urlValidationService;
+  private final UrlService urlService;
 
   @Override
   public void execute(final JobExecutionContext context) {
-    urlValidationService.validateDataCollection();
+    urlService.validateDataCollection();
   }
 }

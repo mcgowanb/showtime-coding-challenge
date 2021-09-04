@@ -44,7 +44,7 @@ public class ScheduleConfig {
   }
 
   private Integer minutesToMillis(final Integer minutes) {
-    return minutes * 1000;
+    return minutes * 60000;
   }
 
 }

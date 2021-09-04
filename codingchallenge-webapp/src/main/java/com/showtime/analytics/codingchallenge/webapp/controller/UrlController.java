@@ -36,5 +36,6 @@ public interface UrlController {
           @ApiResponse(responseCode = "404", description = "URL does not exist in our database")
       })
   @PostMapping(ApplicationConstants.API_PATH_ENCODE)
-  public ResponseEntity<UrlDto> createShortenedURL(@Valid @RequestBody final UrlDto payload);
+  public ResponseEntity<String> createShortenedURL(@Valid @RequestBody final UrlDto payload);
+
 }
