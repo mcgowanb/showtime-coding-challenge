@@ -14,7 +14,7 @@ import com.showtime.analytics.codingchallenge.service.UrlValidationService;
 @Service
 @RequiredArgsConstructor
 @DisallowConcurrentExecution
-public class JobScheduler implements Job {
+public class ValidateJob implements Job {
 
   private final UrlValidationService urlValidationService;
 

@@ -1,5 +1,7 @@
 package com.showtime.analytics.codingchallenge.service.config;
 
+import lombok.extern.log4j.Log4j2;
+
 import org.quartz.JobDetail;
 import org.quartz.SimpleTrigger;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,8 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.JobDetailFactoryBean;
 import org.springframework.scheduling.quartz.SimpleTriggerFactoryBean;
 
-import com.showtime.analytics.codingchallenge.service.schedule.JobScheduler;
+import com.showtime.analytics.codingchallenge.service.schedule.ValidateJob;
 
+@Log4j2
 @Configuration
 public class ScheduleConfig {
 
@@ -24,7 +27,7 @@ public class ScheduleConfig {
   @Bean
   public JobDetailFactoryBean jobDetail() {
     final JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
-    jobDetailFactory.setJobClass(JobScheduler.class);
+    jobDetailFactory.setJobClass(ValidateJob.class);
     jobDetailFactory.setDescription("Invoke Sample Job service...");
     jobDetailFactory.setDurability(true);
     return jobDetailFactory;
