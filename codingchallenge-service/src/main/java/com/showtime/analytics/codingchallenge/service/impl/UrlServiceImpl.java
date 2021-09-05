@@ -4,9 +4,12 @@ import static com.showtime.analytics.codingchallenge.common.constant.Application
 import static com.showtime.analytics.codingchallenge.common.constant.ApplicationConstants.URL_NOT_FOUND_MESSAGE;
 import static com.showtime.analytics.codingchallenge.service.mapper.Mappers.urlToEntity;
 
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -14,6 +17,7 @@ import lombok.extern.log4j.Log4j2;
 
 import org.apache.logging.log4j.Level;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,6 +27,7 @@ import com.showtime.analytics.codingchallenge.common.dto.UrlDto;
 import com.showtime.analytics.codingchallenge.common.exception.ApplicationException;
 import com.showtime.analytics.codingchallenge.service.UrlConversionService;
 import com.showtime.analytics.codingchallenge.service.UrlService;
+import com.showtime.analytics.codingchallenge.service.UrlValidationService;
 import com.showtime.analytics.codingchallenge.service.entity.UrlEntity;
 import com.showtime.analytics.codingchallenge.service.repository.UrlRepository;
 
@@ -32,6 +37,8 @@ import com.showtime.analytics.codingchallenge.service.repository.UrlRepository;
 public class UrlServiceImpl implements UrlService {
 
   private final UrlConversionService urlConversionService;
+
+  private final UrlValidationService urlValidationService;
 
   private final UrlRepository repository;
 
@@ -43,10 +50,21 @@ public class UrlServiceImpl implements UrlService {
 
   @Override
   @SneakyThrows
+  @Transactional
   public void validateDataCollection() {
-    log.info("Validating db stuff, sleeping");
-    Thread.sleep(3000);
-    log.info("Sleeping over bai");
+    log.info("Beginning to validate db for valid urls");
+
+    final List<UrlEntity> failedUrls = repository.getAllRecords().parallel()
+        .filter(Predicate.not(urlValidationService::urlIsValid))
+        .map(i -> {
+          evictFromCache(urlConversionService.encode(i.getId()));
+          return i;
+        })
+        .collect(Collectors.toList());
+
+    log.info("{} url's are no longer valid, purging from the database", failedUrls.size());
+
+    repository.deleteAll(failedUrls);
 
   }
 
@@ -66,12 +84,16 @@ public class UrlServiceImpl implements UrlService {
   }
 
   @Override
-  public String getShortenedUrl(final UrlDto urlDto) {
+  public String getOrCreateShortUrl(final UrlDto urlDto) {
 
-    final Optional<UrlEntity> fqdnOptional = repository.findByFqdn(urlDto.getFqdn());
+    final Optional<UrlEntity> urlEntityOptional = repository.findByFqdn(urlDto.getFqdn());
 
-    if (fqdnOptional.isPresent()) {
-      return buildShortenedUrl(urlConversionService.encode(fqdnOptional.get().getId()));
+    if (urlEntityOptional.isPresent()) {
+
+      UrlEntity urlEntity = urlEntityOptional.get();
+      if (urlValidationService.urlIsValid(urlEntity)) {
+        return buildShortenedUrl(urlConversionService.encode(urlEntity.getId()));
+      }
     }
 
     final UrlEntity entity = urlToEntity.apply(urlDto);
@@ -85,15 +107,9 @@ public class UrlServiceImpl implements UrlService {
     return UriComponentsBuilder.newInstance()
         .scheme(scheme).host(baseUrl).path(encodedPath).build().toString();
   }
-
-  private String getEncodedPathFromUrl(final String url) {
-    try {
-      return new URI(url).getPath();
-    } catch (final URISyntaxException e) {
-      e.printStackTrace();
-      throw new RuntimeException(e.getMessage());
-    }
-
+    
+  @CacheEvict(value = "urls", key = "#shortUrl")
+  public void evictFromCache(final String shortUrl) {
+//    log.info("Evicting {} from the cache", shortUrl);
   }
-
 }

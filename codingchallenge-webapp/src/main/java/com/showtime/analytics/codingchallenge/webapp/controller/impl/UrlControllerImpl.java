@@ -38,6 +38,6 @@ public class UrlControllerImpl implements UrlController {
   @Override
   public ResponseEntity<String> createShortenedURL(final UrlDto payload) {
     log.info("Creating short url for {}", payload.getFqdn());
-    return ResponseEntity.ok(urlService.getShortenedUrl(payload));
+    return ResponseEntity.ok(urlService.getOrCreateShortUrl(payload));
   }
 }

@@ -17,5 +17,5 @@ public interface UrlService {
    */
   String getDecodedUrl(String shortUrl);
 
-  String getShortenedUrl(UrlDto urlDto);
+  String getOrCreateShortUrl(UrlDto urlDto);
 }
