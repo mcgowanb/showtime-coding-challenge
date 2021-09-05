@@ -17,7 +17,6 @@ import lombok.extern.log4j.Log4j2;
 
 import org.apache.logging.log4j.Level;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -40,6 +39,8 @@ public class UrlServiceImpl implements UrlService {
 
   private final UrlValidationService urlValidationService;
 
+  private final CacheServiceImpl cache;
+
   private final UrlRepository repository;
 
   @Value("${spring.application.baseUrl}")
@@ -57,7 +58,7 @@ public class UrlServiceImpl implements UrlService {
     final List<UrlEntity> failedUrls = repository.getAllRecords().parallel()
         .filter(Predicate.not(urlValidationService::urlIsValid))
         .map(i -> {
-          evictFromCache(urlConversionService.encode(i.getId()));
+          cache.evictFromCache(urlConversionService.encode(i.getId()));
           return i;
         })
         .collect(Collectors.toList());
@@ -90,7 +91,7 @@ public class UrlServiceImpl implements UrlService {
 
     if (urlEntityOptional.isPresent()) {
 
-      UrlEntity urlEntity = urlEntityOptional.get();
+      final UrlEntity urlEntity = urlEntityOptional.get();
       if (urlValidationService.urlIsValid(urlEntity)) {
         return buildShortenedUrl(urlConversionService.encode(urlEntity.getId()));
       }
@@ -107,9 +108,5 @@ public class UrlServiceImpl implements UrlService {
     return UriComponentsBuilder.newInstance()
         .scheme(scheme).host(baseUrl).path(encodedPath).build().toString();
   }
-    
-  @CacheEvict(value = "urls", key = "#shortUrl")
-  public void evictFromCache(final String shortUrl) {
-//    log.info("Evicting {} from the cache", shortUrl);
-  }
+
 }
