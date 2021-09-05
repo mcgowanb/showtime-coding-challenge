@@ -8,7 +8,6 @@ import javax.websocket.server.PathParam;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +25,6 @@ public interface UrlController {
           @ApiResponse(responseCode = "400", description = INVALID_SHORT_URL_EXCEPTION_MESSAGE)
       })
   @GetMapping(ApplicationConstants.API_PATH_DECODE)
-  @Cacheable("urls")
   public ResponseEntity<String> getUrlRedirect(@PathParam(ApplicationConstants.PATH_PARAM_URL) final String url);
 
   @Operation(summary = "Create a shortened URL",

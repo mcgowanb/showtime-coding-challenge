@@ -19,11 +19,6 @@ public class ScheduleConfig {
   @Value("${schedule.intervalMinutes}")
   private Integer intervalMinutes;
 
-  /*
-  Using the job in this way is a suboptimal solution if this microservice was to be used in distributed environment where there
-  would be more than one instance of the application running, as this would trigger a job on a schedule for ever active pod
-   */
-
   @Bean
   public JobDetailFactoryBean jobDetail() {
     final JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();

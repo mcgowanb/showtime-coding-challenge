@@ -18,9 +18,17 @@ Running `setup-and-run.sh` from the root directory will do the following:
 
 Once completed, you can run `shutdown.sh` to stop all running containers.
 
-When the app is running, you can view the available endpoints via swagger
-at `http://localhost:8080/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config`
+## Solution Considerations:
 
-The credentials from postgres are simply `coding_challenge_usr` / `coding_challenge_password` for brevity. Ideally an
-implementation of hashicorp vault or similar would be used to store these credentails or even provide rotating
-credentials for the application to improve security 
+- Caching:
+  -- As this is a micro-service which will most likely have more than one pod for scalability I've opted for a redis
+  implementation rather than in memory one. This will ensure that all active pods have access to the same cache
+  information and will be ultimately benefit from a warm cache in the event of additional pods starting up.
+
+- Scheduling -- Since the criteria was not to use the `@Scheduled` annotation, I've opted for `Quartz` as a solution
+  here. Since this is backed by a DB, it is my understanding that in the case of multiple instances, the active instance
+  that gets the job will hold a lock on the job to prevent multiple instances of the same scheduled job running. I've
+  not used this library myself, but
+  the [documentation](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/configuration/ConfigJDBCJobStoreClustering.html)
+  indicates this.
+

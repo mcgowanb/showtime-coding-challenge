@@ -14,6 +14,7 @@ import lombok.extern.log4j.Log4j2;
 
 import org.apache.logging.log4j.Level;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -50,6 +51,7 @@ public class UrlServiceImpl implements UrlService {
   }
 
   @Override
+  @Cacheable(value = "urls", key = "#shortUrl")
   public String getDecodedUrl(final String shortUrl) {
     final long urlIdentifier = urlConversionService.decode(shortUrl);
 

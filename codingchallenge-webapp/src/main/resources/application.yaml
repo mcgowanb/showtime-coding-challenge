@@ -16,6 +16,8 @@ spring:
 
   liquibase:
     change-log: db.changelog/dbchangelog.xml
+  cache:
+    type: redis
 
   quartz:
     job-store-type: jdbc
