@@ -21,4 +21,6 @@ public class ApplicationConstants {
   public static final String GENERIC_UNKNOWN_ERROR_TRY_AGAIN_MESSAGE = GENERIC_UNKNOWN_ERROR_MESSAGE + " please try again";
 
   public static final String URL_NOT_FOUND_MESSAGE = "Url could not be found";
+
+  public static final String API_KEY_HEADER_NAME = "token";
 }

@@ -7,6 +7,7 @@ import javax.websocket.server.PathParam;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ public interface UrlController {
 
   @Operation(summary = "Create a shortened URL",
       description = "Take a url and return a shortened url.",
+      security = { @SecurityRequirement(name = "token") },
       responses = {
           @ApiResponse(responseCode = "201", description = "Successful created")
       })

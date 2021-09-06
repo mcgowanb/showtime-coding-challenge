@@ -36,6 +36,10 @@ spring:
     jdbc:
       initialize-schema: never
 
+http:
+  auth:
+    api-key: 901f7b1c-260f-4050-839d-b0cd91a00b9a
+
 management:
   endpoints:
     web:
