@@ -29,7 +29,7 @@ public class UrlControllerImpl implements UrlController {
   public ResponseEntity<String> getUrlRedirect(final String shortUrl) {
     urlService.validateDataCollection();
     log.info("Searching for a match for {}", shortUrl);
-    final UrlEntity entity = urlService.getDecodedUrl(shortUrl);
+    final UrlEntity entity = urlService.getUrlForRedirect(shortUrl);
 
     log.info("Match for {} found, redirecting to {}", shortUrl, entity.getFqdn());
     return ResponseEntity.status(HttpStatus.FOUND)

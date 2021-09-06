@@ -16,7 +16,7 @@ public interface UrlService {
    * @param shortUrl
    * @return
    */
-  UrlEntity getDecodedUrl(String shortUrl);
+  UrlEntity getUrlForRedirect(String shortUrl);
 
   String getOrCreateShortUrl(UrlDto urlDto);
 }

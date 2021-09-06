@@ -5,7 +5,6 @@ import static com.showtime.analytics.codingchallenge.common.constant.Application
 import static com.showtime.analytics.codingchallenge.service.mapper.Mappers.urlToEntity;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -68,7 +67,7 @@ public class UrlServiceImpl implements UrlService {
 
   @Override
   @Cacheable(value = "urls", key = "#shortUrl")
-  public UrlEntity getDecodedUrl(final String shortUrl) {
+  public UrlEntity getUrlForRedirect(final String shortUrl) {
     final long urlIdentifier = urlConversionService.decode(shortUrl);
 
     return repository.findById(urlIdentifier)
@@ -82,22 +81,13 @@ public class UrlServiceImpl implements UrlService {
   @Override
   public String getOrCreateShortUrl(final UrlDto urlDto) {
 
-    final Optional<UrlEntity> urlEntityOptional = repository.findByFqdn(urlDto.getFqdn());
+    final UrlEntity urlEntity = repository.findByFqdn(urlDto.getFqdn()).orElseGet(() ->
+        repository.save(urlToEntity.apply(urlDto))
+    );
+    final String shortUrl = urlConversionService.encode(urlEntity.getId());
+    cache.addToCache(shortUrl, urlEntity);
+    return buildShortenedUrl(shortUrl);
 
-    if (urlEntityOptional.isPresent()) {
-
-      final UrlEntity urlEntity = urlEntityOptional.get();
-      if (urlValidationService.urlIsValid(urlEntity)) {
-        return buildShortenedUrl(urlConversionService.encode(urlEntity.getId()));
-      }
-    }
-
-    final UrlEntity entity = urlToEntity.apply(urlDto);
-    repository.save(entity);
-    cache.addToCache(urlConversionService.encode(entity.getId()), entity);
-
-    final String encodedPath = urlConversionService.encode(entity.getId());
-    return buildShortenedUrl(encodedPath);
   }
 
   private String buildShortenedUrl(final String encodedPath) {
