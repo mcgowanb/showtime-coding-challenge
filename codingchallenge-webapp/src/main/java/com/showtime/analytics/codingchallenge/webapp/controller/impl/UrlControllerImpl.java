@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.showtime.analytics.codingchallenge.common.dto.UrlDto;
 import com.showtime.analytics.codingchallenge.service.UrlService;
+import com.showtime.analytics.codingchallenge.service.entity.UrlEntity;
 import com.showtime.analytics.codingchallenge.webapp.controller.UrlController;
 
 @Log4j2
@@ -26,12 +27,13 @@ public class UrlControllerImpl implements UrlController {
 
   @Override
   public ResponseEntity<String> getUrlRedirect(final String shortUrl) {
+    urlService.validateDataCollection();
     log.info("Searching for a match for {}", shortUrl);
-    final String url = urlService.getDecodedUrl(shortUrl);
+    final UrlEntity entity = urlService.getDecodedUrl(shortUrl);
 
-    log.info("Match for {} found, redirecting to {}", shortUrl, url);
+    log.info("Match for {} found, redirecting to {}", shortUrl, entity.getFqdn());
     return ResponseEntity.status(HttpStatus.FOUND)
-        .location(URI.create(url))
+        .location(URI.create(entity.getFqdn()))
         .build();
   }
 

@@ -57,10 +57,7 @@ public class UrlServiceImpl implements UrlService {
 
     final List<UrlEntity> failedUrls = repository.getAllRecords().parallel()
         .filter(Predicate.not(urlValidationService::urlIsValid))
-        .map(i -> {
-          cache.evictFromCache(urlConversionService.encode(i.getId()));
-          return i;
-        })
+        .peek(urlEntity -> cache.evictFromCache(urlEntity, urlConversionService.encode(urlEntity.getId())))
         .collect(Collectors.toList());
 
     log.info("{} url's are no longer valid, purging from the database", failedUrls.size());
@@ -71,17 +68,15 @@ public class UrlServiceImpl implements UrlService {
 
   @Override
   @Cacheable(value = "urls", key = "#shortUrl")
-  public String getDecodedUrl(final String shortUrl) {
+  public UrlEntity getDecodedUrl(final String shortUrl) {
     final long urlIdentifier = urlConversionService.decode(shortUrl);
 
-    final UrlEntity urlEntity = repository.findById(urlIdentifier)
+    return repository.findById(urlIdentifier)
         .orElseThrow(() -> new ApplicationException.InvalidShortUrlException(URL_NOT_FOUND_MESSAGE,
             INVALID_SHORT_URL_EXCEPTION_MESSAGE,
             HttpStatus.BAD_REQUEST,
             Level.ERROR
         ));
-
-    return urlEntity.getFqdn();
   }
 
   @Override
@@ -99,6 +94,7 @@ public class UrlServiceImpl implements UrlService {
 
     final UrlEntity entity = urlToEntity.apply(urlDto);
     repository.save(entity);
+    cache.addToCache(urlConversionService.encode(entity.getId()), entity);
 
     final String encodedPath = urlConversionService.encode(entity.getId());
     return buildShortenedUrl(encodedPath);

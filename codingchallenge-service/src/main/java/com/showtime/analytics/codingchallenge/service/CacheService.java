@@ -1,8 +1,9 @@
 package com.showtime.analytics.codingchallenge.service;
 
-import org.springframework.cache.annotation.CacheEvict;
+import com.showtime.analytics.codingchallenge.service.entity.UrlEntity;
 
 public interface CacheService {
-  @CacheEvict(value = "urls", key = "#shortUrl")
-  void evictFromCache(String shortUrl);
+  UrlEntity evictFromCache(UrlEntity urlEntity, String shortUrl);
+
+  UrlEntity addToCache(String shortUrl, UrlEntity urlEntity);
 }

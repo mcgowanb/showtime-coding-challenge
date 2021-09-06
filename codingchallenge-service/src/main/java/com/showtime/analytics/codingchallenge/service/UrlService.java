@@ -1,6 +1,7 @@
 package com.showtime.analytics.codingchallenge.service;
 
 import com.showtime.analytics.codingchallenge.common.dto.UrlDto;
+import com.showtime.analytics.codingchallenge.service.entity.UrlEntity;
 
 public interface UrlService {
 
@@ -15,7 +16,7 @@ public interface UrlService {
    * @param shortUrl
    * @return
    */
-  String getDecodedUrl(String shortUrl);
+  UrlEntity getDecodedUrl(String shortUrl);
 
   String getOrCreateShortUrl(UrlDto urlDto);
 }

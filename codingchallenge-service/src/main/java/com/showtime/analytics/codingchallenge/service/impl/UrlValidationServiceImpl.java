@@ -19,6 +19,6 @@ public class UrlValidationServiceImpl implements UrlValidationService {
   @Override
   public Boolean urlIsValid(final String fqdn) {
     log.info("Validating url: {}", fqdn);
-    return true;
+    return false;
   }
 }
