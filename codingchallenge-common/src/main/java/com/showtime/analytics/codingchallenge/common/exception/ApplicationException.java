@@ -22,7 +22,7 @@ public class ApplicationException extends RuntimeException {
     this.statusCode = statusCode;
     this.logLevel = logLevel;
   }
-
+  
   public static class InvalidShortUrlException extends ApplicationException {
 
     public InvalidShortUrlException(final String message, final String userMessage, final HttpStatus statusCode, final Level logLevel) {

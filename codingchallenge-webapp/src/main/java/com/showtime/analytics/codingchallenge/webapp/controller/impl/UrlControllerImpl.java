@@ -27,7 +27,6 @@ public class UrlControllerImpl implements UrlController {
 
   @Override
   public ResponseEntity<String> getUrlRedirect(final String shortUrl) {
-    urlService.validateDataCollection();
     log.info("Searching for a match for {}", shortUrl);
     final UrlEntity entity = urlService.getUrlForRedirect(shortUrl);
 

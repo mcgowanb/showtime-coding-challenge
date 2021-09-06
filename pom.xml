@@ -28,6 +28,7 @@
     <lombok.version>1.18.20</lombok.version>
     <postgresql.version>42.2.23</postgresql.version>
     <spring-context.version>5.3.9</spring-context.version>
+    <okhttp3.version>4.9.1</okhttp3.version>
   </properties>
 
   <modules>
@@ -79,6 +80,12 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-security</artifactId>
         <version>${spring-boot-starter.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.squareup.okhttp3</groupId>
+        <artifactId>okhttp</artifactId>
+        <version>${okhttp3.version}</version>
       </dependency>
 
 

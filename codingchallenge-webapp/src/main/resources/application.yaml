@@ -30,8 +30,6 @@ spring:
             dataSource: quartzDataSource
             class: org.quartz.impl.jdbcjobstore.JobStoreTX
             driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
-            #            isClustered: true
-            #            clusterCheckinInterval: 5000
             tablePrefix: quartz.QRTZ_
     jdbc:
       initialize-schema: never
@@ -39,6 +37,10 @@ spring:
 http:
   auth:
     api-key: 901f7b1c-260f-4050-839d-b0cd91a00b9a
+
+client:
+  connectionTimeoutMilliseconds: 20000
+  readTimeoutMilliseconds: 20000
 
 management:
   endpoints:
