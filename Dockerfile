@@ -10,7 +10,7 @@ RUN mkdir /newrelic && cd /newrelic \
   && curl -O https://download.newrelic.com/newrelic/java-agent/newrelic-agent/6.5.0/newrelic-agent-6.5.0.jar
 
 FROM adoptopenjdk/openjdk11:latest
-LABEL ostk.app.name=GlobalZonosShipConfirmer
+LABEL ostk.app.name=ShowtimeCodingChallenge
 LABEL ostk.app.type=webservice
 
 ENV TZ=Europe/Dublin
