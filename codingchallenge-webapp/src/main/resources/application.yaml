@@ -7,17 +7,19 @@ spring:
     show-sql: false
     database-platform: org.hibernate.dialect.PostgreSQL95Dialect
   datasource:
-    url: jdbc:postgresql://${DB_DEFAULT_HOST:localhost}:5432/coding_challenge
+    url: jdbc:postgresql://${DB_DEFAULT_HOST:localhost}:${DB_DEFAULT_PORT:5432}/coding_challenge
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 2
-      username: coding_challenge_usr
-      password: coding_challeng_password
+      username: ${DB_USER:coding_challenge_usr}
+      password: ${DB_PASS:coding_challeng_password}
 
   liquibase:
     change-log: db.changelog/dbchangelog.xml
   cache:
     type: redis
+  redis:
+    port: ${REDIS_PORT:6379}
 
   quartz:
     job-store-type: jdbc

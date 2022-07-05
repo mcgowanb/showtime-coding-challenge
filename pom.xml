@@ -14,7 +14,7 @@
   <groupId>com.showtime.analytics</groupId>
   <artifactId>codingchallenge</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>codingchallenge</name>
+  <name>Showtime Coding Challenge</name>
   <description>Coding Challenge for Showtime Analytics</description>
 
   <properties>
@@ -29,12 +29,15 @@
     <postgresql.version>42.2.23</postgresql.version>
     <spring-context.version>5.3.9</spring-context.version>
     <okhttp3.version>4.9.1</okhttp3.version>
+    <rest-assured.version>5.1.0</rest-assured.version>
+    <testcontainers-bom.version>1.17.3</testcontainers-bom.version>
   </properties>
 
   <modules>
     <module>codingchallenge-common</module>
     <module>codingchallenge-webapp</module>
     <module>codingchallenge-service</module>
+    <module>codingchallenge-integration-test</module>
   </modules>
 
   <dependencyManagement>
@@ -55,6 +58,12 @@
       <dependency>
         <groupId>com.showtime.analytics</groupId>
         <artifactId>codingchallenge-service</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>com.showtime.analytics</groupId>
+        <artifactId>codingchallenge-integration-test</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -143,11 +152,38 @@
       <optional>true</optional>
     </dependency>
 
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>${rest-assured.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers-bom</artifactId>
+      <version>${testcontainers-bom.version}</version>
+      <type>pom</type>
+      <scope>import</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
 
     <plugins>
+      <plugin>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
